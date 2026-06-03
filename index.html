@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>開髖卡點體驗｜90/90 轉髖 Trial</title>
+  <style>
+    :root {
+      --dark:#192117;
+      --dark2:#24301f;
+      --cream:#f1ece3;
+      --cream2:#fbf7ee;
+      --paper:#fff8e8;
+      --text:#1f211c;
+      --muted:#7d776b;
+      --green:#3f5a32;
+      --green2:#5f7a4e;
+      --line:#d8d1c5;
+      --lineDark:rgba(241,236,227,.18);
+      --shadow:0 24px 60px rgba(0,0,0,.18);
+      --radius:28px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; width:100%; max-width:100%; overflow-x:hidden; }
+    body {
+      margin:0;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+      color:var(--text);
+      background:var(--cream);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      line-height:1.55;
+    }
+    a { color:inherit; }
+    .page { width:min(100%,1040px); max-width:1040px; margin:0 auto; }
+
+    .darkTop {
+      background:
+        radial-gradient(circle at 14% 0%, rgba(95,122,78,.34), transparent 34%),
+        radial-gradient(circle at 82% 18%, rgba(241,236,227,.08), transparent 32%),
+        var(--dark);
+      color:var(--cream);
+      padding:28px 14px 44px;
+    }
+    .lightBody {
+      background:
+        radial-gradient(circle at 8% 8%, rgba(63,90,50,.10), transparent 32%),
+        var(--cream);
+      padding:24px 14px 72px;
+    }
+    section { margin:22px 0; }
+
+    .heroCard {
+      border:1px solid var(--lineDark);
+      border-radius:32px;
+      overflow:hidden;
+      background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+      box-shadow:0 28px 80px rgba(0,0,0,.32);
+      padding:clamp(26px,5vw,54px);
+    }
+    .eyebrow {
+      display:inline-flex;
+      border:1px solid rgba(241,236,227,.25);
+      border-radius:999px;
+      padding:8px 13px;
+      color:var(--cream);
+      background:rgba(241,236,227,.08);
+      font-weight:950;
+      font-size:14px;
+    }
+    .heroTitle {
+      margin:18px 0 12px;
+      font-size:clamp(38px,7vw,76px);
+      line-height:1.02;
+      letter-spacing:-.06em;
+      font-weight:1000;
+    }
+    .heroSub {
+      margin:0;
+      max-width:760px;
+      color:rgba(241,236,227,.78);
+      font-size:clamp(17px,2.4vw,22px);
+      font-weight:800;
+    }
+    .heroSteps {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:26px;
+    }
+    .stepPill {
+      border:1px solid rgba(241,236,227,.16);
+      border-radius:22px;
+      background:rgba(241,236,227,.08);
+      padding:14px 16px;
+      color:rgba(241,236,227,.88);
+      font-weight:950;
+    }
+    .stepPill small { display:block; opacity:.68; font-size:12px; margin-bottom:3px; }
+
+    .sectionShell {
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(251,247,238,.86);
+      box-shadow:var(--shadow);
+      padding:clamp(22px,4vw,38px);
+      width:100%;
+      max-width:100%;
+    }
+    .sectionTitle {
+      margin:0;
+      color:var(--green);
+      font-size:clamp(30px,5vw,54px);
+      line-height:1.06;
+      letter-spacing:-.055em;
+      font-weight:1000;
+    }
+    .sectionSub {
+      margin:12px 0 0;
+      color:var(--muted);
+      font-size:clamp(16px,2.2vw,20px);
+      font-weight:750;
+    }
+
+    .video-wrap {
+      position:relative;
+      width:100%;
+      padding-top:56.25%;
+      border-radius:24px;
+      overflow:hidden;
+      background:#111;
+      border:1px solid var(--line);
+      box-shadow:0 18px 42px rgba(30,30,28,.14);
+      margin-top:22px;
+    }
+    .video-wrap iframe {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+    .notice {
+      margin-top:18px;
+      border:1px solid rgba(63,90,50,.22);
+      border-radius:22px;
+      background:rgba(63,90,50,.08);
+      color:var(--green);
+      padding:16px 18px;
+      font-weight:900;
+      font-size:clamp(16px,2vw,19px);
+    }
+
+    .checkGrid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:16px;
+    }
+    .checkItem {
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fffdf8;
+      padding:12px 14px;
+      color:#34342f;
+      font-weight:850;
+    }
+    .checkItem b { color:var(--green); }
+
+    .exerciseGrid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:24px;
+    }
+    .exercise-card {
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:linear-gradient(180deg,#fffdf8,#f5efe4);
+      overflow:hidden;
+      box-shadow:0 18px 38px rgba(30,30,28,.08);
+      min-width:0;
+    }
+    .exerciseBody { padding:18px; }
+    .exercise-card h3 {
+      margin:0 0 10px;
+      color:var(--green);
+      font-size:clamp(21px,2.6vw,28px);
+      line-height:1.16;
+      letter-spacing:-.04em;
+      font-weight:1000;
+    }
+    .exercise-card p {
+      margin:8px 0;
+      color:var(--text);
+      font-weight:760;
+      font-size:15.5px;
+    }
+    .exercise-card strong { color:var(--green); font-weight:1000; }
+    .tag {
+      display:inline-flex;
+      border-radius:999px;
+      padding:7px 11px;
+      background:#e7e6d9;
+      color:var(--green);
+      font-weight:1000;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+
+    .retestBox {
+      margin-top:20px;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .miniPanel {
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:linear-gradient(180deg,#fffaf1,#f5efe4);
+      padding:20px;
+      width:100%;
+      max-width:100%;
+      min-width:0;
+    }
+    .miniPanel h3 {
+      margin:0 0 10px;
+      color:var(--green);
+      font-size:24px;
+      line-height:1.2;
+      letter-spacing:-.035em;
+    }
+    .miniPanel ul { margin:10px 0 0; padding-left:20px; color:var(--muted); font-weight:820; }
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:58px;
+      padding:14px 24px;
+      border-radius:999px;
+      border:1px solid var(--green);
+      background:var(--green);
+      color:var(--cream);
+      font-size:18px;
+      font-weight:950;
+      letter-spacing:-.03em;
+      text-decoration:none;
+      cursor:pointer;
+      box-shadow:0 18px 42px rgba(0,0,0,.18);
+      transition:.18s ease;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+    }
+    .btn:hover { transform:translateY(-2px); background:var(--green2); }
+    .copyBox {
+      border:1px dashed rgba(63,90,50,.35);
+      border-radius:20px;
+      background:#fffdf8;
+      padding:14px;
+      color:#34342f;
+      font-size:14.5px;
+      font-weight:760;
+      white-space:pre-line;
+    }
+
+    @media (max-width:860px) {
+      .darkTop { padding:18px 10px 34px; }
+      .lightBody { padding:20px 10px 54px; }
+      .page { width:100%; max-width:100%; }
+      .heroCard,.sectionShell { border-radius:24px; padding:22px 14px; overflow:hidden; }
+      .heroSteps,.exerciseGrid,.retestBox { grid-template-columns:1fr; }
+      .checkGrid { grid-template-columns:1fr; }
+      .video-wrap { border-radius:18px; }
+      .btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="darkTop">
+    <div class="page">
+      <section class="heroCard">
+        <span class="eyebrow">Week 1 Trial｜開髖卡點體驗</span>
+        <h1 class="heroTitle">A｜坐姿 90/90 轉髖</h1>
+        <p class="heroSub">這一頁先測你的髖能不能順順轉過去。不要急著壓更開，先看是髖在轉，還是骨盆、腰、大腿外側在幫忙。</p>
+        <div class="heroSteps">
+          <div class="stepPill"><small>Step 1</small>看影片做測試</div>
+          <div class="stepPill"><small>Step 2</small>做 3 個推薦動作</div>
+          <div class="stepPill"><small>Step 3</small>回測 90/90</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="lightBody">
+    <div class="page">
+      <section class="sectionShell">
+        <h2 class="sectionTitle">先做 90/90 轉髖測試</h2>
+        <p class="sectionSub">跟著影片做一次。重點不是轉很大，而是感覺髖能不能順順轉過去。</p>
+
+        <div class="video-wrap">
+          <iframe
+            src="https://player.vimeo.com/video/1197978697?h=ced5698e1b&badge=0&autopause=0&player_id=0&app_id=58479"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            title="90/90 轉髖測試">
+          </iframe>
+        </div>
+
+        <div class="notice">這個測試主要看：髖能不能順順轉過去，還是骨盆、腰、大腿外側一直想幫忙。</div>
+
+        <div class="checkGrid">
+          <div class="checkItem"><b>觀察 1</b>｜轉不過去，或膝蓋離地很高</div>
+          <div class="checkItem"><b>觀察 2</b>｜需要用手硬撐才轉得過去</div>
+          <div class="checkItem"><b>觀察 3</b>｜骨盆會跟著翻，屁股會跑掉</div>
+          <div class="checkItem"><b>觀察 4</b>｜腰或身體一起扭，大腿外側容易搶</div>
+        </div>
+      </section>
+
+      <section class="sectionShell">
+        <h2 class="sectionTitle">如果你最卡的是 90/90，先做這 3 個</h2>
+        <p class="sectionSub">這一組不是要你練到很累，而是先讓轉髖變順一點，拿到第一個小勝利。</p>
+
+        <div class="exerciseGrid">
+          <article class="exercise-card">
+            <div class="video-wrap">
+              <iframe
+                src="https://player.vimeo.com/video/1197977488?h=0b2712c6f8&badge=0&autopause=0&player_id=0&app_id=58479"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                title="90/90 側彎">
+              </iframe>
+            </div>
+            <div class="exerciseBody">
+              <span class="tag">動作 1</span>
+              <h3>90/90 側彎</h3>
+              <p><strong>目標：</strong>鬆開前腳臀外側，讓髖比較有空間。</p>
+              <p><strong>次數：</strong>每邊 6–8 次，慢慢做。</p>
+              <p><strong>觀察：</strong>做完再轉髖，看看前腳那側有沒有比較不卡。</p>
+            </div>
+          </article>
+
+          <article class="exercise-card">
+            <div class="video-wrap">
+              <iframe
+                src="https://player.vimeo.com/video/1197977489?h=db57a9b0d9&badge=0&autopause=0&player_id=0&app_id=58479"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                title="單腿眼鏡蛇">
+              </iframe>
+            </div>
+            <div class="exerciseBody">
+              <span class="tag">動作 2</span>
+              <h3>單腿眼鏡蛇＋抬腳</h3>
+              <p><strong>目標：</strong>讓髖開始主動轉動，不只是被動卡住。</p>
+              <p><strong>次數：</strong>每邊 6–10 次，停 1–2 秒。</p>
+              <p><strong>觀察：</strong>感覺是臀部深層出力，不是腰在凹。</p>
+            </div>
+          </article>
+
+          <article class="exercise-card">
+            <div class="video-wrap">
+              <iframe
+                src="https://player.vimeo.com/video/1197977490?h=2885bcd78b&badge=0&autopause=0&player_id=0&app_id=58479"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                title="梨狀肌伸展">
+              </iframe>
+            </div>
+            <div class="exerciseBody">
+              <span class="tag">動作 3</span>
+              <h3>梨狀肌伸展</h3>
+              <p><strong>目標：</strong>降低臀深層緊繃，讓轉髖比較不防備。</p>
+              <p><strong>次數：</strong>每邊 30–45 秒，做 1–2 回。</p>
+              <p><strong>觀察：</strong>不要拉到麻或刺，感覺臀深層慢慢放掉就好。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="sectionShell">
+        <h2 class="sectionTitle">做完，回到 90/90 再測一次</h2>
+        <p class="sectionSub">不是看有沒有變完美，而是看有沒有比一開始順一點。</p>
+
+        <div class="retestBox">
+          <div class="miniPanel">
+            <h3>回測觀察</h3>
+            <ul>
+              <li>轉髖有沒有比較順？</li>
+              <li>膝蓋有沒有比較容易接近地板？</li>
+              <li>髖外側 / 臀深處有沒有比較不卡？</li>
+              <li>骨盆、腰、大腿外側有沒有比較少幫忙？</li>
+            </ul>
+          </div>
+          <div class="miniPanel">
+            <h3>Skool 回報格式</h3>
+            <div class="copyBox">我第一週最卡的是：A 90/90
+
+我做完第一輪練習後：
+A 有比較順 / B 差不多 / C 更卡 / D 不確定
+
+我最明顯的感覺是：
+髖外側卡 / 臀深處卡 / 腰會幫忙 / 大腿外側抽筋 / 膝蓋卡</div>
+            <p style="margin:14px 0 0;"><a class="btn" href="#" onclick="alert('這裡之後放 Skool 回報貼文連結'); return false;">回報我的 Week 1 開髖卡點</a></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
