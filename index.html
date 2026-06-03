@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 1｜開髖卡點測試</title>
+  <style>
+    :root {
+      --dark:#192117;
+      --dark2:#24301f;
+      --cream:#f1ece3;
+      --cream2:#fbf7ee;
+      --paper:#fff8e8;
+      --text:#1f211c;
+      --muted:#7d776b;
+      --green:#3f5a32;
+      --green2:#5f7a4e;
+      --line:#d8d1c5;
+      --lineDark:rgba(241,236,227,.18);
+      --shadow:0 18px 44px rgba(0,0,0,.12);
+      --radius:26px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      color:var(--text);
+      background:var(--cream);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    button, a { -webkit-tap-highlight-color:transparent; }
+    .darkTop {
+      background:
+        radial-gradient(circle at 15% 0%, rgba(95,122,78,.34), transparent 34%),
+        radial-gradient(circle at 88% 18%, rgba(241,236,227,.08), transparent 32%),
+        var(--dark);
+      color:var(--cream);
+      padding:18px 12px 24px;
+    }
+    .lightBody {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(63,90,50,.10), transparent 32%),
+        var(--cream);
+      padding:16px 12px 72px;
+    }
+    .page { width:min(100%, 760px); margin:0 auto; }
+    .heroCard {
+      border:1px solid var(--lineDark);
+      border-radius:30px;
+      background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+      box-shadow:0 24px 70px rgba(0,0,0,.28);
+      padding:22px 18px;
+    }
+    .kicker {
+      display:inline-flex;
+      border:1px solid rgba(241,236,227,.24);
+      border-radius:999px;
+      padding:7px 12px;
+      background:rgba(241,236,227,.08);
+      color:rgba(241,236,227,.88);
+      font-size:13px;
+      font-weight:950;
+    }
+    h1 {
+      margin:13px 0 8px;
+      font-size:clamp(32px,8.4vw,58px);
+      line-height:1.02;
+      letter-spacing:-.065em;
+      font-weight:1000;
+    }
+    .heroSub {
+      margin:0;
+      color:rgba(241,236,227,.78);
+      font-size:17px;
+      font-weight:850;
+      letter-spacing:-.02em;
+    }
+    .tabs {
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding:4px 0 2px;
+      margin-top:17px;
+      scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar { display:none; }
+    .tabBtn {
+      flex:0 0 auto;
+      border:1px solid rgba(241,236,227,.22);
+      background:rgba(241,236,227,.08);
+      color:var(--cream);
+      border-radius:999px;
+      padding:12px 15px;
+      font-size:15px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      touch-action:manipulation;
+    }
+    .tabBtn.active {
+      background:var(--cream);
+      color:var(--green);
+      border-color:var(--cream);
+    }
+    .tabBtn.disabled {
+      opacity:.52;
+      cursor:not-allowed;
+    }
+    .section {
+      margin:16px 0;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(251,247,238,.88);
+      box-shadow:var(--shadow);
+      padding:16px;
+      overflow:hidden;
+    }
+    .sectionTitle {
+      margin:0;
+      color:var(--green);
+      font-size:clamp(25px,6.7vw,40px);
+      line-height:1.08;
+      letter-spacing:-.052em;
+      font-weight:1000;
+    }
+    .sectionSub {
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:15px;
+      font-weight:850;
+    }
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      border-radius:999px;
+      padding:7px 11px;
+      margin-bottom:10px;
+      background:rgba(63,90,50,.10);
+      color:var(--green);
+      font-size:13px;
+      font-weight:1000;
+    }
+    .emptyHint {
+      text-align:center;
+      color:var(--green);
+      font-weight:950;
+      padding:20px 10px;
+      border:1px dashed rgba(63,90,50,.24);
+      border-radius:22px;
+      background:rgba(255,253,248,.55);
+    }
+    .testPanel { display:none; }
+    .testPanel.open { display:block; }
+    .playCard {
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(160deg,#fffdf8,#f2eadf);
+      overflow:hidden;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+    .playSurface {
+      position:relative;
+      min-height:190px;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(241,236,227,.22), transparent 34%),
+        linear-gradient(145deg,var(--dark),var(--dark2));
+      color:var(--cream);
+    }
+    .playIcon {
+      width:74px;
+      height:74px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:var(--cream);
+      color:var(--green);
+      font-size:34px;
+      font-weight:1000;
+      box-shadow:0 18px 46px rgba(0,0,0,.32);
+      padding-left:4px;
+    }
+    .playLabel {
+      position:absolute;
+      left:14px;
+      right:14px;
+      bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      color:rgba(241,236,227,.9);
+      font-size:14px;
+      font-weight:950;
+    }
+    .playLabel span:last-child {
+      border:1px solid rgba(241,236,227,.24);
+      border-radius:999px;
+      padding:5px 9px;
+      font-size:12px;
+    }
+    .videoNote {
+      margin:0;
+      padding:12px 14px 14px;
+      color:#48483f;
+      font-size:15px;
+      font-weight:850;
+    }
+    .observeList {
+      display:grid;
+      gap:8px;
+      margin-top:12px;
+    }
+    .observeItem {
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:#fffdf8;
+      padding:11px 12px;
+      color:#3d3d36;
+      font-size:15px;
+      font-weight:900;
+    }
+    .exerciseNav {
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      padding:14px 0 2px;
+      scrollbar-width:none;
+    }
+    .exerciseNav::-webkit-scrollbar { display:none; }
+    .exerciseNavBtn {
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      background:#fffdf8;
+      color:var(--green);
+      border-radius:999px;
+      padding:10px 13px;
+      font-size:14px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .exerciseNavBtn.active {
+      background:var(--green);
+      border-color:var(--green);
+      color:var(--cream);
+    }
+    .exerciseGrid {
+      margin-top:12px;
+      display:grid;
+      gap:10px;
+    }
+    .exerciseCard {
+      border:1px solid var(--line);
+      border-radius:23px;
+      background:linear-gradient(180deg,#fffdf8,#f5efe4);
+      overflow:hidden;
+    }
+    .exerciseHead {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border:0;
+      background:transparent;
+      padding:14px;
+      cursor:pointer;
+      text-align:left;
+      color:inherit;
+      touch-action:manipulation;
+    }
+    .exerciseTitleWrap { min-width:0; }
+    .exerciseTitle {
+      margin:0;
+      color:var(--green);
+      font-size:19px;
+      line-height:1.22;
+      letter-spacing:-.035em;
+      font-weight:1000;
+    }
+    .exerciseMeta {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:900;
+    }
+    .chev {
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      background:rgba(63,90,50,.10);
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      font-size:18px;
+      font-weight:1000;
+      flex:0 0 auto;
+      transition:.16s ease;
+    }
+    .exerciseCard.open .chev { transform:rotate(180deg); }
+    .exerciseBody {
+      display:none;
+      padding:0 14px 14px;
+    }
+    .exerciseCard.open .exerciseBody { display:block; }
+    .miniInfo {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin:12px 0 0;
+    }
+    .infoLine {
+      border-radius:15px;
+      background:rgba(63,90,50,.07);
+      padding:10px 11px;
+      font-size:15px;
+      font-weight:850;
+      color:#42443b;
+    }
+    .infoLine b { color:var(--green); }
+    .choiceRow {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:7px;
+      margin-top:12px;
+    }
+    .choiceRow.issue {
+      grid-template-columns:repeat(4,1fr);
+    }
+    .choice {
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fffdf8;
+      padding:10px 4px;
+      color:var(--green);
+      font-size:14px;
+      line-height:1.15;
+      font-weight:1000;
+      text-align:center;
+      cursor:pointer;
+      white-space:nowrap;
+      touch-action:manipulation;
+    }
+    .choice.active {
+      background:var(--green);
+      border-color:var(--green);
+      color:var(--cream);
+    }
+    .questionTitle {
+      margin:16px 0 0;
+      color:var(--green);
+      font-size:18px;
+      font-weight:1000;
+      letter-spacing:-.03em;
+    }
+    .reportBox {
+      border:1px dashed rgba(63,90,50,.34);
+      background:rgba(63,90,50,.07);
+      border-radius:20px;
+      padding:14px;
+      margin-top:13px;
+      color:#45483f;
+      font-size:16px;
+      font-weight:900;
+      white-space:pre-line;
+    }
+    .actionRow {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .ctaBtn, .copyBtn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      border-radius:999px;
+      text-decoration:none;
+      font-size:16px;
+      font-weight:1000;
+      cursor:pointer;
+      border:1px solid var(--green);
+      touch-action:manipulation;
+    }
+    .copyBtn {
+      background:#fffdf8;
+      color:var(--green);
+    }
+    .ctaBtn {
+      background:var(--green);
+      color:var(--cream);
+      box-shadow:0 16px 36px rgba(63,90,50,.18);
+    }
+    .modal {
+      position:fixed;
+      inset:0;
+      background:#000;
+      z-index:99;
+      display:none;
+      align-items:stretch;
+      justify-content:stretch;
+      padding:0;
+    }
+    .modal.open { display:flex; }
+    .modalInner {
+      width:100vw;
+      height:100dvh;
+      position:relative;
+      background:#000;
+    }
+    .modalClose {
+      position:fixed;
+      right:14px;
+      top:calc(14px + env(safe-area-inset-top));
+      z-index:120;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.32);
+      background:rgba(0,0,0,.42);
+      color:#fff;
+      font-size:26px;
+      font-weight:900;
+      cursor:pointer;
+      backdrop-filter:blur(8px);
+    }
+    .modalVideo {
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100dvh;
+      background:#000;
+      border-radius:0;
+      overflow:hidden;
+    }
+    .modalVideo iframe {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+    @media (max-width:640px) {
+      .darkTop { padding:15px 10px 22px; }
+      .lightBody { padding:14px 10px 56px; }
+      .heroCard { border-radius:24px; padding:20px 15px; }
+      .section { padding:14px; border-radius:24px; }
+      .playSurface { min-height:178px; }
+      .choiceRow { gap:6px; }
+      .choice { font-size:13px; padding:10px 3px; }
+      .choiceRow.issue .choice { font-size:12.5px; }
+      .actionRow { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="darkTop">
+    <div class="page">
+      <section class="heroCard">
+        <span class="kicker">開髖卡點測試｜Week 1</span>
+        <h1>先找出你卡在哪個動作</h1>
+        <p class="heroSub">選一個測試動作，看影片做一次，再做對應練習。</p>
+
+        <nav class="tabs" aria-label="測試動作標籤">
+          <button class="tabBtn" data-test="9090" type="button">A｜90/90 轉髖</button>
+          <button class="tabBtn disabled" type="button" disabled>B｜支撐青蛙</button>
+          <button class="tabBtn disabled" type="button" disabled>C｜分腿伸展</button>
+        </nav>
+      </section>
+    </div>
+  </div>
+
+  <div class="lightBody">
+    <div class="page">
+      <div class="emptyHint" id="emptyHint">先點上方測試標籤開始。</div>
+
+      <main class="testPanel" id="panel-9090">
+        <section class="section" id="test-9090">
+          <span class="tag">測試動作</span>
+          <h2 class="sectionTitle">A｜坐姿 90/90 轉髖</h2>
+          <p class="sectionSub">看髖能不能自己轉，不要讓腰、骨盆、大腿外側一直幫忙。</p>
+
+          <div class="playCard" data-video="https://player.vimeo.com/video/1197978697?h=ced5698e1b&autoplay=1" role="button" tabindex="0" aria-label="播放 90/90 轉髖測試">
+            <div class="playSurface">
+              <div class="playIcon">▶</div>
+              <div class="playLabel"><span>90/90 轉髖測試</span><span>點擊播放</span></div>
+            </div>
+            <p class="videoNote">做完觀察：是髖順順轉，還是身體其他地方一直想幫忙？</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <span class="tag">推薦練習</span>
+          <h2 class="sectionTitle">如果你最卡的是 90/90，先做這 3 個</h2>
+          <p class="sectionSub">照順序做。做完後，再回去測一次 90/90。</p>
+
+          <div class="exerciseNav" aria-label="推薦練習快速跳轉">
+            <button class="exerciseNavBtn" data-target="ex1" type="button">動作 1</button>
+            <button class="exerciseNavBtn" data-target="ex2" type="button">動作 2</button>
+            <button class="exerciseNavBtn" data-target="ex3" type="button">動作 3</button>
+          </div>
+
+          <div class="exerciseGrid">
+            <article class="exerciseCard" id="ex1">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 1｜90/90 側彎</h3>
+                  <p class="exerciseMeta">每邊 6–8 次</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1197977488?h=0b2712c6f8&autoplay=1" role="button" tabindex="0" aria-label="播放 90/90 側彎">
+                  <div class="playSurface">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>90/90 側彎</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>臀外側比較不卡。</div>
+                  <div class="infoLine"><b>觀察：</b>再轉 90/90，有沒有順一點？</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="exerciseCard" id="ex2">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 2｜單腿眼鏡蛇</h3>
+                  <p class="exerciseMeta">每邊 6–10 次</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1197977489?h=db57a9b0d9&autoplay=1" role="button" tabindex="0" aria-label="播放 單腿眼鏡蛇">
+                  <div class="playSurface">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>單腿眼鏡蛇</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>讓髖自己轉，不靠腰。</div>
+                  <div class="infoLine"><b>觀察：</b>感覺在臀深層，不是腰。</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="exerciseCard" id="ex3">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 3｜梨狀肌伸展</h3>
+                  <p class="exerciseMeta">每邊 30–45 秒</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1197977490?h=2885bcd78b&autoplay=1" role="button" tabindex="0" aria-label="播放 梨狀肌伸展">
+                  <div class="playSurface">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>梨狀肌伸展</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>降低臀深層緊繃。</div>
+                  <div class="infoLine"><b>觀察：</b>不要麻，不要刺。</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <span class="tag">回測</span>
+          <h2 class="sectionTitle">再測一次 90/90</h2>
+
+          <p class="questionTitle">做完後？</p>
+          <div class="choiceRow" aria-label="回測結果選項">
+            <button class="choice" data-kind="result" data-value="有變順" type="button">有變順</button>
+            <button class="choice" data-kind="result" data-value="差不多" type="button">差不多</button>
+            <button class="choice" data-kind="result" data-value="更卡" type="button">更卡</button>
+            <button class="choice" data-kind="result" data-value="不確定" type="button">不確定</button>
+          </div>
+
+          <p class="questionTitle">哪個最符合？</p>
+          <div class="choiceRow issue" aria-label="最符合的卡點選項">
+            <button class="choice" data-kind="issue" data-value="屁股往前跑" type="button">屁股往前跑</button>
+            <button class="choice" data-kind="issue" data-value="腰會幫忙" type="button">腰會幫忙</button>
+            <button class="choice" data-kind="issue" data-value="大腿外側抽筋" type="button">大腿外側抽筋</button>
+            <button class="choice" data-kind="issue" data-value="其他" type="button">其他</button>
+          </div>
+
+          <div class="reportBox" id="reportText">A｜90/90 做完後有變順。
+做 90/90 時，大腿外側很緊、很用力，甚至會抽筋。</div>
+          <div class="actionRow">
+            <button class="copyBtn" id="copyBtn" type="button">複製回測結果</button>
+            <a class="ctaBtn" href="#" target="_blank" rel="noopener">到 Skool 回報</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modalInner" id="modalInner">
+      <button class="modalClose" id="modalClose" type="button" aria-label="關閉影片">×</button>
+      <div class="modalVideo" id="modalVideo"></div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('videoModal');
+    const modalInner = document.getElementById('modalInner');
+    const modalVideo = document.getElementById('modalVideo');
+    const closeBtn = document.getElementById('modalClose');
+    const emptyHint = document.getElementById('emptyHint');
+    const panel9090 = document.getElementById('panel-9090');
+
+    function openVideo(src) {
+      modalVideo.innerHTML = `<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen title="播放影片"></iframe>`;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const fsTarget = modalInner || modal;
+      if (fsTarget.requestFullscreen) {
+        fsTarget.requestFullscreen().catch(() => {});
+      }
+    }
+
+    document.querySelectorAll('.playCard').forEach((card) => {
+      card.addEventListener('click', () => openVideo(card.getAttribute('data-video')));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openVideo(card.getAttribute('data-video'));
+        }
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      modalVideo.innerHTML = '';
+      document.body.style.overflow = '';
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    document.querySelectorAll('.tabBtn[data-test="9090"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tabBtn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        emptyHint.style.display = 'none';
+        panel9090.classList.add('open');
+        setTimeout(() => document.getElementById('test-9090').scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+      });
+    });
+
+    function openExercise(id, shouldScroll = true) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      document.querySelectorAll('.exerciseCard').forEach((el) => {
+        const isTarget = el === card;
+        el.classList.toggle('open', isTarget);
+        const head = el.querySelector('.exerciseHead');
+        if (head) head.setAttribute('aria-expanded', String(isTarget));
+      });
+      document.querySelectorAll('.exerciseNavBtn').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-target') === id);
+      });
+      if (shouldScroll) {
+        setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+      }
+    }
+
+    document.querySelectorAll('.exerciseNavBtn').forEach((btn) => {
+      btn.addEventListener('click', () => openExercise(btn.getAttribute('data-target')));
+    });
+
+    document.querySelectorAll('.exerciseHead').forEach((head) => {
+      head.addEventListener('click', () => {
+        const card = head.closest('.exerciseCard');
+        if (!card) return;
+        if (card.classList.contains('open')) {
+          card.classList.remove('open');
+          head.setAttribute('aria-expanded', 'false');
+          document.querySelectorAll('.exerciseNavBtn').forEach((btn) => {
+            if (btn.getAttribute('data-target') === card.id) btn.classList.remove('active');
+          });
+        } else {
+          openExercise(card.id, false);
+        }
+      });
+    });
+
+    let selectedResult = '有變順';
+    let selectedIssue = '大腿外側抽筋';
+    const reportText = document.getElementById('reportText');
+
+    function updateReport() {
+      const resultPhraseMap = {
+        '有變順': '有變順',
+        '差不多': '差不多',
+        '更卡': '更卡',
+        '不確定': '還不太確定'
+      };
+      const issuePhraseMap = {
+        '屁股跑掉': '但屁股還是會跑掉。',
+        '腰幫忙': '但腰還是會想幫忙。',
+        '大腿外側抽筋': '但大腿外側還是容易抽筋。',
+        '其他': '但比較明顯的是：＿＿＿＿。'
+      };
+      const resultPhrase = resultPhraseMap[selectedResult] || selectedResult;
+      const issuePhrase = issuePhraseMap[selectedIssue] || `但${selectedIssue}還是最明顯。`;
+      reportText.textContent = `A｜90/90 做完後${resultPhrase}。\n${issuePhrase}`;
+    }
+
+    document.querySelectorAll('.choice').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const kind = btn.getAttribute('data-kind');
+        const value = btn.getAttribute('data-value');
+        document.querySelectorAll(`.choice[data-kind="${kind}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (kind === 'result') selectedResult = value;
+        if (kind === 'issue') selectedIssue = value;
+        updateReport();
+      });
+    });
+
+    document.querySelector('.choice[data-kind="result"][data-value="有變順"]').classList.add('active');
+    document.querySelector('.choice[data-kind="issue"][data-value="大腿外側抽筋"]').classList.add('active');
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const text = reportText.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        const btn = document.getElementById('copyBtn');
+        const old = btn.textContent;
+        btn.textContent = '已複製';
+        setTimeout(() => { btn.textContent = old; }, 1200);
+      } catch (err) {
+        alert('複製失敗，請手動長按文字複製');
+      }
+    });
+  </script>
+</body>
+</html>
