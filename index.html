@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 1｜開髖卡點測試</title>
+  <style>
+    :root {
+      --dark:#192117;
+      --dark2:#24301f;
+      --cream:#f1ece3;
+      --cream2:#fbf7ee;
+      --paper:#fff8e8;
+      --text:#1f211c;
+      --muted:#7d776b;
+      --green:#3f5a32;
+      --green2:#5f7a4e;
+      --line:#d8d1c5;
+      --lineDark:rgba(241,236,227,.18);
+      --shadow:0 18px 44px rgba(0,0,0,.12);
+      --radius:26px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      color:var(--text);
+      background:var(--cream);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    button, a { -webkit-tap-highlight-color:transparent; }
+    .darkTop {
+      background:
+        radial-gradient(circle at 15% 0%, rgba(95,122,78,.34), transparent 34%),
+        radial-gradient(circle at 88% 18%, rgba(241,236,227,.08), transparent 32%),
+        var(--dark);
+      color:var(--cream);
+      padding:18px 12px 24px;
+    }
+    .lightBody {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(63,90,50,.10), transparent 32%),
+        var(--cream);
+      padding:16px 12px 72px;
+    }
+    .page { width:min(100%, 760px); margin:0 auto; }
+    .heroCard {
+      border:1px solid var(--lineDark);
+      border-radius:30px;
+      background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+      box-shadow:0 24px 70px rgba(0,0,0,.28);
+      padding:22px 18px;
+    }
+    .kicker {
+      display:inline-flex;
+      border:1px solid rgba(241,236,227,.24);
+      border-radius:999px;
+      padding:7px 12px;
+      background:rgba(241,236,227,.08);
+      color:rgba(241,236,227,.88);
+      font-size:13px;
+      font-weight:950;
+    }
+    h1 {
+      margin:13px 0 8px;
+      font-size:clamp(32px,8.4vw,58px);
+      line-height:1.02;
+      letter-spacing:-.065em;
+      font-weight:1000;
+    }
+    .heroSub {
+      margin:0;
+      color:rgba(241,236,227,.78);
+      font-size:17px;
+      font-weight:850;
+      letter-spacing:-.02em;
+    }
+    .tabs {
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding:4px 0 2px;
+      margin-top:17px;
+      scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar { display:none; }
+    .tabBtn {
+      flex:0 0 auto;
+      border:1px solid rgba(241,236,227,.22);
+      background:rgba(241,236,227,.08);
+      color:var(--cream);
+      border-radius:999px;
+      padding:12px 15px;
+      font-size:15px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      touch-action:manipulation;
+    }
+    .tabBtn.active {
+      background:var(--cream);
+      color:var(--green);
+      border-color:var(--cream);
+    }
+    .tabBtn.disabled {
+      opacity:.52;
+      cursor:not-allowed;
+    }
+    .section {
+      margin:16px 0;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(251,247,238,.88);
+      box-shadow:var(--shadow);
+      padding:16px;
+      overflow:hidden;
+    }
+    .sectionTitle {
+      margin:0;
+      color:var(--green);
+      font-size:clamp(25px,6.7vw,40px);
+      line-height:1.08;
+      letter-spacing:-.052em;
+      font-weight:1000;
+    }
+    .sectionSub {
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:15px;
+      font-weight:850;
+    }
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      border-radius:999px;
+      padding:7px 11px;
+      margin-bottom:10px;
+      background:rgba(63,90,50,.10);
+      color:var(--green);
+      font-size:13px;
+      font-weight:1000;
+    }
+    .emptyHint {
+      text-align:center;
+      color:var(--green);
+      font-weight:950;
+      padding:20px 10px;
+      border:1px dashed rgba(63,90,50,.24);
+      border-radius:22px;
+      background:rgba(255,253,248,.55);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    .emptyHint.hidden {
+      opacity:0;
+      transform:translateY(-4px);
+      pointer-events:none;
+      height:0;
+      margin:0;
+      padding:0;
+      border:0;
+      overflow:hidden;
+    }
+    .testPanel { display:none; }
+    .testPanel.open { display:block; }
+    .playCard {
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(160deg,#fffdf8,#f2eadf);
+      overflow:hidden;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+    .playSurface {
+      position:relative;
+      min-height:190px;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(241,236,227,.22), transparent 34%),
+        linear-gradient(145deg,var(--dark),var(--dark2));
+      color:var(--cream);
+      overflow:hidden;
+    }
+    .playSurface::before {
+      content:attr(data-num);
+      position:absolute;
+      inset:auto 10px -20px auto;
+      font-size:120px;
+      line-height:1;
+      font-weight:900;
+      opacity:.07;
+      color:var(--cream);
+      letter-spacing:-.08em;
+      pointer-events:none;
+    }
+    .playIcon {
+      position:relative;
+      z-index:1;
+      width:74px;
+      height:74px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:var(--cream);
+      color:var(--green);
+      font-size:34px;
+      font-weight:1000;
+      box-shadow:0 18px 46px rgba(0,0,0,.32);
+      padding-left:4px;
+    }
+    .playLabel {
+      position:absolute;
+      z-index:1;
+      left:14px;
+      right:14px;
+      bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      color:rgba(241,236,227,.9);
+      font-size:14px;
+      font-weight:950;
+    }
+    .playLabel span:last-child {
+      border:1px solid rgba(241,236,227,.24);
+      border-radius:999px;
+      padding:5px 9px;
+      font-size:12px;
+    }
+    .videoNote {
+      margin:0;
+      padding:12px 14px 14px;
+      color:#48483f;
+      font-size:15px;
+      font-weight:850;
+    }
+    .observeList {
+      display:grid;
+      gap:8px;
+      margin-top:12px;
+    }
+    .observeItem {
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:#fffdf8;
+      padding:11px 12px;
+      color:#3d3d36;
+      font-size:15px;
+      font-weight:900;
+    }
+    .exerciseNav {
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      padding:14px 0 2px;
+      scrollbar-width:none;
+    }
+    .exerciseNav::-webkit-scrollbar { display:none; }
+    .exerciseNavBtn {
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      background:#fffdf8;
+      color:var(--green);
+      border-radius:999px;
+      padding:10px 13px;
+      font-size:14px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .exerciseNavBtn.active {
+      background:var(--green);
+      border-color:var(--green);
+      color:var(--cream);
+    }
+    .exerciseGrid {
+      margin-top:12px;
+      display:grid;
+      gap:10px;
+    }
+    .exerciseCard {
+      border:1px solid var(--line);
+      border-radius:23px;
+      background:linear-gradient(180deg,#fffdf8,#f5efe4);
+      overflow:hidden;
+    }
+    .exerciseHead {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border:0;
+      background:transparent;
+      padding:14px;
+      cursor:pointer;
+      text-align:left;
+      color:inherit;
+      touch-action:manipulation;
+    }
+    .exerciseTitleWrap { min-width:0; }
+    .exerciseTitle {
+      margin:0;
+      color:var(--green);
+      font-size:19px;
+      line-height:1.22;
+      letter-spacing:-.035em;
+      font-weight:1000;
+    }
+    .exerciseMeta {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:900;
+    }
+    .chev {
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      background:rgba(63,90,50,.10);
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      font-size:18px;
+      font-weight:1000;
+      flex:0 0 auto;
+      transition:.16s ease;
+    }
+    .exerciseCard.open .chev { transform:rotate(180deg); }
+    .exerciseBody {
+      display:none;
+      padding:0 14px 14px;
+    }
+    .exerciseCard.open .exerciseBody { display:block; }
+    .miniInfo {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin:12px 0 0;
+    }
+    .infoLine {
+      border-radius:15px;
+      background:rgba(63,90,50,.07);
+      padding:10px 11px;
+      font-size:15px;
+      font-weight:850;
+      color:#42443b;
+    }
+    .infoLine b { color:var(--green); }
+    .choiceRow {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:7px;
+      margin-top:12px;
+    }
+    .choiceRow.issue {
+      grid-template-columns:repeat(4,1fr);
+    }
+    .choice {
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fffdf8;
+      padding:10px 4px;
+      color:var(--green);
+      font-size:14px;
+      line-height:1.15;
+      font-weight:1000;
+      text-align:center;
+      cursor:pointer;
+      white-space:nowrap;
+      touch-action:manipulation;
+    }
+    .choice.active {
+      background:var(--green);
+      border-color:var(--green);
+      color:var(--cream);
+    }
+    .questionTitle {
+      margin:16px 0 0;
+      color:var(--green);
+      font-size:18px;
+      font-weight:1000;
+      letter-spacing:-.03em;
+    }
+    .reportBox {
+      border:1px dashed rgba(63,90,50,.34);
+      background:rgba(63,90,50,.07);
+      border-radius:20px;
+      padding:14px;
+      margin-top:13px;
+      color:#45483f;
+      font-size:16px;
+      font-weight:900;
+      white-space:pre-line;
+    }
+    .actionRow {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .ctaBtn, .copyBtn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      border-radius:999px;
+      text-decoration:none;
+      font-size:16px;
+      font-weight:1000;
+      cursor:pointer;
+      border:1px solid var(--green);
+      touch-action:manipulation;
+    }
+    .copyBtn {
+      background:#fffdf8;
+      color:var(--green);
+    }
+    .ctaBtn {
+      background:var(--green);
+      color:var(--cream);
+      box-shadow:0 16px 36px rgba(63,90,50,.18);
+    }
+    .modal {
+      position:fixed;
+      inset:0;
+      background:#000;
+      z-index:99;
+      display:none;
+      align-items:stretch;
+      justify-content:stretch;
+      padding:0;
+    }
+    .modal.open { display:flex; }
+    .modalInner {
+      width:100vw;
+      height:100dvh;
+      position:relative;
+      background:#000;
+    }
+    .modalClose {
+      position:fixed;
+      right:14px;
+      top:calc(14px + env(safe-area-inset-top));
+      z-index:120;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.32);
+      background:rgba(0,0,0,.42);
+      color:#fff;
+      font-size:26px;
+      font-weight:900;
+      cursor:pointer;
+      backdrop-filter:blur(8px);
+    }
+    .modalVideo {
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100dvh;
+      background:#000;
+      border-radius:0;
+      overflow:hidden;
+    }
+    .modalVideo iframe {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    /* ── Progressive reveal ── */
+    .revealBtn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      margin-top:14px;
+      min-height:52px;
+      border-radius:999px;
+      border:none;
+      background:var(--green);
+      color:var(--cream);
+      font-size:16px;
+      font-weight:1000;
+      cursor:pointer;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      transition:.16s ease;
+    }
+    .revealBtn:hover { transform:translateY(-1px); }
+    .revealBtn.inCard {
+      margin:0;
+      border-radius:0 0 24px 24px;
+      min-height:46px;
+      font-size:15px;
+    }
+    .hidden-step { display:none; }
+    .hidden-step.visible {
+      display:block;
+      animation: stepSlideIn .3s ease both;
+    }
+    @keyframes stepSlideIn {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    /* Remove exerciseCard accordion — body always visible now */
+    .exerciseBody { display:block !important; }
+    .exerciseHead { cursor:default; pointer-events:none; }
+    .chev { display:none; }
+    .exerciseNav { display:none; }
+
+    @media (max-width:640px) {
+      .darkTop { padding:15px 10px 22px; }
+      .lightBody { padding:14px 10px 56px; }
+      .heroCard { border-radius:24px; padding:20px 15px; }
+      .section { padding:14px; border-radius:24px; }
+      .playSurface { min-height:178px; }
+      .choiceRow { gap:6px; }
+      .choice { font-size:13px; padding:10px 3px; }
+      .choiceRow.issue .choice { font-size:12.5px; }
+      .actionRow { grid-template-columns:1fr; }
+    }
+    @media (max-width:480px) {
+      .choiceRow,
+      .choiceRow.issue {
+        grid-template-columns:repeat(2,1fr);
+      }
+      .choice,
+      .choiceRow.issue .choice {
+        white-space:normal;
+        font-size:14px;
+        padding:10px 8px;
+      }
+      .exerciseNavBtn { font-size:13px; padding:9px 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="darkTop">
+    <div class="page">
+      <section class="heroCard">
+        <span class="kicker">開髖卡點測試｜Week 1</span>
+        <h1>先找出你卡在哪個動作</h1>
+        <p class="heroSub">選一個測試動作，看影片做一次，再做對應練習。</p>
+
+        <nav class="tabs" aria-label="測試動作標籤">
+          <button class="tabBtn" data-test="9090" type="button">A｜90/90 轉髖</button>
+          <button class="tabBtn" data-test="frog" type="button">B｜支撐青蛙</button>
+          <button class="tabBtn" data-test="split" type="button">C｜分腿伸展</button>
+        </nav>
+      </section>
+    </div>
+  </div>
+
+  <div class="lightBody">
+    <div class="page">
+      <div class="emptyHint" id="emptyHint">先點上方測試標籤開始。</div>
+
+      <main class="testPanel" id="panel-9090">
+        <section class="section" id="test-9090">
+          <span class="tag">測試動作</span>
+          <h2 class="sectionTitle">A｜坐姿 90/90 轉髖</h2>
+          <p class="sectionSub">看髖能不能自己轉，不要讓腰、骨盆、大腿外側一直幫忙。</p>
+
+          <div class="playCard" data-video="https://player.vimeo.com/video/1197978697?h=ced5698e1b&autoplay=1" role="button" tabindex="0" aria-label="播放 90/90 轉髖測試">
+            <div class="playSurface" data-num="A">
+              <div class="playIcon">▶</div>
+              <div class="playLabel"><span>90/90 轉髖測試</span><span>點擊播放</span></div>
+            </div>
+            <p class="videoNote">做完觀察：是髖順順轉，還是身體其他地方一直想幫忙？</p>
+            <button class="revealBtn inCard" data-reveal="ex-9090-wrap" data-auto-next type="button">做完，開始推薦練習 →</button>
+          </div>
+        </section>
+        <div class="hidden-step" id="ex-9090-wrap">
+        <section class="section">
+          <span class="tag">推薦練習</span>
+          <h2 class="sectionTitle">如果你最卡的是 90/90，先做這 3 個</h2>
+          <p class="sectionSub">照順序做。做完後，再回去測一次 90/90。</p>
+
+          <div class="exerciseNav" aria-label="推薦練習快速跳轉">
+            <button class="exerciseNavBtn" data-target="ex1" type="button">1｜側彎</button>
+            <button class="exerciseNavBtn" data-target="ex2" type="button">2｜眼鏡蛇</button>
+            <button class="exerciseNavBtn" data-target="ex3" type="button">3｜梨狀肌</button>
+          </div>
+
+          <div class="exerciseGrid">
+            <article class="exerciseCard" id="ex1">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 1｜90/90 側彎</h3>
+                  <p class="exerciseMeta">每邊 6–8 次</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1197977488?h=0b2712c6f8&autoplay=1" role="button" tabindex="0" aria-label="播放 90/90 側彎">
+                  <div class="playSurface" data-num="1">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>90/90 側彎</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>臀外側比較不卡。</div>
+                  <div class="infoLine"><b>觀察：</b>再轉 90/90，有沒有順一點？</div>
+                </div>
+              </div>
+            </article>
+
+<button class="revealBtn hidden-step" id="btn-ex2" data-reveal="ex2-wrap" type="button">做完，繼續動作 2 →</button>
+            <div class="hidden-step" id="ex2-wrap">
+              <article class="exerciseCard" id="ex2">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 2｜單腿眼鏡蛇</h3>
+                    <p class="exerciseMeta">每邊 6–10 次</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1197977489?h=db57a9b0d9&autoplay=1" role="button" tabindex="0" aria-label="播放 單腿眼鏡蛇">
+                    <div class="playSurface" data-num="2">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>單腿眼鏡蛇</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>讓髖自己轉，不靠腰。</div>
+                    <div class="infoLine"><b>觀察：</b>感覺在臀深層，不是腰。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn hidden-step" id="btn-ex3" data-reveal="ex3-wrap" type="button">做完，繼續動作 3 →</button>
+            </div>
+            <div class="hidden-step" id="ex3-wrap">
+              <article class="exerciseCard" id="ex3">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 3｜梨狀肌伸展</h3>
+                    <p class="exerciseMeta">每邊 30–45 秒</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1197977490?h=2885bcd78b&autoplay=1" role="button" tabindex="0" aria-label="播放 梨狀肌伸展">
+                    <div class="playSurface" data-num="3">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>梨狀肌伸展</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>降低臀深層緊繃。</div>
+                    <div class="infoLine"><b>觀察：</b>不要麻，不要刺。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn" data-reveal="retry-9090-wrap" type="button">做完了，測測看有沒有進步 →</button>
+            </div>
+          </div>
+        </section>
+        <div class="hidden-step" id="retry-9090-wrap">
+        <section class="section">
+          <span class="tag">回測</span>
+          <h2 class="sectionTitle">再測一次 90/90</h2>
+
+          <p class="questionTitle">做完後，有沒有比較好？</p>
+          <div class="choiceRow" aria-label="回測結果選項">
+            <button class="choice" data-test="9090" data-kind="result" data-value="比較穩" type="button">比較穩</button>
+            <button class="choice" data-test="9090" data-kind="result" data-value="差不多" type="button">差不多</button>
+            <button class="choice" data-test="9090" data-kind="result" data-value="更卡" type="button">更卡</button>
+            <button class="choice" data-test="9090" data-kind="result" data-value="不確定" type="button">不確定</button>
+          </div>
+
+          <p class="questionTitle">哪個還最明顯？</p>
+          <div class="choiceRow issue" aria-label="最符合的卡點選項">
+            <button class="choice" data-test="9090" data-kind="issue" data-value="屁股往前跑" type="button">屁股往前跑</button>
+            <button class="choice" data-test="9090" data-kind="issue" data-value="腰會幫忙" type="button">腰會幫忙</button>
+            <button class="choice" data-test="9090" data-kind="issue" data-value="大腿外側抽筋" type="button">大腿外側抽筋</button>
+            <button class="choice" data-test="9090" data-kind="issue" data-value="其他" type="button">其他</button>
+          </div>
+
+          <div class="reportBox" id="report-9090"></div>
+          <div class="actionRow">
+            <button class="copyBtn" data-report-target="report-9090" type="button">複製回測結果</button>
+            <a class="ctaBtn" href="#" target="_blank" rel="noopener">到 Skool 回報</a>
+          </div>
+        </div>
+        </section>
+      </main>
+
+      <main class="testPanel" id="panel-frog">
+        <section class="section" id="test-frog">
+          <span class="tag">測試動作</span>
+          <h2 class="sectionTitle">B｜支撐青蛙</h2>
+          <p class="sectionSub">看髖能不能打開、後坐，身體能不能直立，不要靠腰硬撐。</p>
+
+          <div class="playCard" data-video="https://player.vimeo.com/video/1198464616?h=6261f9cc74&autoplay=1" role="button" tabindex="0" aria-label="播放 支撐青蛙測試">
+            <div class="playSurface" data-num="B">
+              <div class="playIcon">▶</div>
+              <div class="playLabel"><span>支撐青蛙測試</span><span>點擊播放</span></div>
+            </div>
+            <p class="videoNote">雙膝慢慢打開，身體保持直立，屁股往後坐再回來。</p>
+            <button class="revealBtn inCard" data-reveal="ex-frog-wrap" data-auto-next type="button">做完，開始推薦練習 →</button>
+          </div>
+        </section>
+        <div class="hidden-step" id="ex-frog-wrap">
+        <section class="section">
+          <span class="tag">推薦練習</span>
+          <h2 class="sectionTitle">如果你最卡的是支撐青蛙，先做這 3 個</h2>
+          <p class="sectionSub">先把內側張力、旋轉控制和蹲姿打開。做完後，再回去測一次支撐青蛙。</p>
+
+          <div class="exerciseNav" aria-label="支撐青蛙推薦練習快速跳轉">
+            <button class="exerciseNavBtn" data-target="frog-ex1" type="button">1｜臀內收</button>
+            <button class="exerciseNavBtn" data-target="frog-ex2" type="button">2｜半跪扭轉</button>
+            <button class="exerciseNavBtn" data-target="frog-ex3" type="button">3｜女神蹲</button>
+          </div>
+
+          <div class="exerciseGrid">
+            <article class="exerciseCard" id="frog-ex1">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 1｜臀內收延伸</h3>
+                  <p class="exerciseMeta">每邊 6–8 次，慢慢做</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1198466989?h=5fdf6fdf58&autoplay=1" role="button" tabindex="0" aria-label="播放 臀內收延伸">
+                  <div class="playSurface" data-num="1">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>臀內收延伸</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>讓大腿內側先放掉一點防備。</div>
+                  <div class="infoLine"><b>觀察：</b>感覺拉開，但不要膝蓋或髖內側刺痛。</div>
+                </div>
+              </div>
+            </article>
+
+<button class="revealBtn hidden-step" id="btn-frog-ex2" data-reveal="frog-ex2-wrap" type="button">做完，繼續動作 2 →</button>
+            <div class="hidden-step" id="frog-ex2-wrap">
+              <article class="exerciseCard" id="frog-ex2">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 2｜半跪扭轉</h3>
+                    <p class="exerciseMeta">每邊 6–10 次</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1198466986?h=c9a3fd918f&autoplay=1" role="button" tabindex="0" aria-label="播放 半跪扭轉">
+                    <div class="playSurface" data-num="2">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>半跪扭轉</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>讓髖打開時，骨盆和軀幹比較穩。</div>
+                    <div class="infoLine"><b>觀察：</b>轉的時候不要用腰硬扭。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn hidden-step" id="btn-frog-ex3" data-reveal="frog-ex3-wrap" type="button">做完，繼續動作 3 →</button>
+            </div>
+            <div class="hidden-step" id="frog-ex3-wrap">
+              <article class="exerciseCard" id="frog-ex3">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 3｜女神蹲</h3>
+                    <p class="exerciseMeta">6–10 次，停 1–2 秒</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1198466987?h=459215767f&autoplay=1" role="button" tabindex="0" aria-label="播放 女神蹲">
+                    <div class="playSurface" data-num="3">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>女神蹲</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>把開髖接回蹲下與站起的控制。</div>
+                    <div class="infoLine"><b>觀察：</b>膝蓋跟腳尖同方向，不要腰塌或骨盆翻掉。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn" data-reveal="retry-frog-wrap" type="button">做完了，測測看有沒有進步 →</button>
+            </div>
+          </div>
+        </section>
+        <div class="hidden-step" id="retry-frog-wrap">
+        <section class="section">
+          <span class="tag">回測</span>
+          <h2 class="sectionTitle">再測一次支撐青蛙</h2>
+
+          <p class="questionTitle">做完後，有沒有比較好？</p>
+          <div class="choiceRow" aria-label="支撐青蛙回測結果選項">
+            <button class="choice" data-test="frog" data-kind="result" data-value="有變好" type="button">有變好</button>
+            <button class="choice" data-test="frog" data-kind="result" data-value="差不多" type="button">差不多</button>
+            <button class="choice" data-test="frog" data-kind="result" data-value="更卡" type="button">更卡</button>
+            <button class="choice" data-test="frog" data-kind="result" data-value="不確定" type="button">不確定</button>
+          </div>
+
+          <p class="questionTitle">哪個還最明顯？</p>
+          <div class="choiceRow issue" aria-label="支撐青蛙最符合的卡點選項">
+            <button class="choice" data-test="frog" data-kind="issue" data-value="大腿內側很緊" type="button">大腿內側很緊</button>
+            <button class="choice" data-test="frog" data-kind="issue" data-value="往後坐卡住" type="button">往後坐卡住</button>
+            <button class="choice" data-test="frog" data-kind="issue" data-value="身體很難直立" type="button">身體很難直立</button>
+            <button class="choice" data-test="frog" data-kind="issue" data-value="腰會凹塌" type="button">腰會凹塌</button>
+            <button class="choice" data-test="frog" data-kind="issue" data-value="骨盆會翻掉" type="button">骨盆會翻掉</button>
+            <button class="choice" data-test="frog" data-kind="issue" data-value="膝髖內側不舒服" type="button">膝髖內側不舒服</button>
+          </div>
+
+          <div class="reportBox" id="report-frog"></div>
+          <div class="actionRow">
+            <button class="copyBtn" data-report-target="report-frog" type="button">複製回測結果</button>
+            <a class="ctaBtn" href="#" target="_blank" rel="noopener">到 Skool 回報</a>
+          </div>
+        </div>
+        </section>
+      </main>
+
+      <main class="testPanel" id="panel-split">
+        <section class="section" id="test-split">
+          <span class="tag">測試動作</span>
+          <h2 class="sectionTitle">C｜分腿伸展</h2>
+          <p class="sectionSub">看髖前側、腿後側和骨盆前後切換，能不能順順地接在一起。</p>
+
+          <div class="playCard" data-video="https://player.vimeo.com/video/1198654855?h=df4b9a499d&autoplay=1" role="button" tabindex="0" aria-label="播放 分腿伸展測試">
+            <div class="playSurface" data-num="C">
+              <div class="playIcon">▶</div>
+              <div class="playLabel"><span>分腿伸展測試</span><span>點擊播放</span></div>
+            </div>
+            <p class="videoNote">分腿跪姿前後來回移動。往前打開後腳髖前側，往後拉開前腳腿後側。</p>
+            <button class="revealBtn inCard" data-reveal="ex-split-wrap" data-auto-next type="button">做完，開始推薦練習 →</button>
+          </div>
+        </section>
+        <div class="hidden-step" id="ex-split-wrap">
+        <section class="section">
+          <span class="tag">推薦練習</span>
+          <h2 class="sectionTitle">如果你最卡的是分腿伸展，先做這 3 個</h2>
+          <p class="sectionSub">先打開髖前側和腿後側，再練骨盆前後切換。做完後，再回去測一次分腿伸展。</p>
+
+          <div class="exerciseNav" aria-label="分腿伸展推薦練習快速跳轉">
+            <button class="exerciseNavBtn" data-target="split-ex1" type="button">1｜髖前側</button>
+            <button class="exerciseNavBtn" data-target="split-ex2" type="button">2｜腿後側</button>
+            <button class="exerciseNavBtn" data-target="split-ex3" type="button">3｜前後切換</button>
+          </div>
+
+          <div class="exerciseGrid">
+            <article class="exerciseCard" id="split-ex1">
+              <button class="exerciseHead" type="button" aria-expanded="false">
+                <div class="exerciseTitleWrap">
+                  <h3 class="exerciseTitle">動作 1｜單側駱駝</h3>
+                  <p class="exerciseMeta">每邊 6–8 次，慢慢做</p>
+                </div>
+                <span class="chev">⌄</span>
+              </button>
+              <div class="exerciseBody">
+                <div class="playCard" data-video="https://player.vimeo.com/video/1198654854?h=112f99e1a3&autoplay=1" role="button" tabindex="0" aria-label="播放 單側駱駝">
+                  <div class="playSurface" data-num="1">
+                    <div class="playIcon">▶</div>
+                    <div class="playLabel"><span>單側駱駝</span><span>點擊播放</span></div>
+                  </div>
+                </div>
+                <div class="miniInfo">
+                  <div class="infoLine"><b>目標：</b>先打開後腳髖前側。</div>
+                  <div class="infoLine"><b>觀察：</b>感覺在髖前側，不要用腰硬凹。</div>
+                </div>
+              </div>
+            </article>
+
+<button class="revealBtn hidden-step" id="btn-split-ex2" data-reveal="split-ex2-wrap" type="button">做完，繼續動作 2 →</button>
+            <div class="hidden-step" id="split-ex2-wrap">
+              <article class="exerciseCard" id="split-ex2">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 2｜青蛙前彎</h3>
+                    <p class="exerciseMeta">6–10 次，停 1–2 秒</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1198654856?h=9d9dce1de1&autoplay=1" role="button" tabindex="0" aria-label="播放 青蛙前彎">
+                    <div class="playSurface" data-num="2">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>青蛙前彎</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>打開前腳腿後側延展。</div>
+                    <div class="infoLine"><b>觀察：</b>往後移時不要硬壓膝蓋，也不要憋住。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn hidden-step" id="btn-split-ex3" data-reveal="split-ex3-wrap" type="button">做完，繼續動作 3 →</button>
+            </div>
+            <div class="hidden-step" id="split-ex3-wrap">
+              <article class="exerciseCard" id="split-ex3">
+                <button class="exerciseHead" type="button" aria-expanded="false">
+                  <div class="exerciseTitleWrap">
+                    <h3 class="exerciseTitle">動作 3｜單腿前彎</h3>
+                    <p class="exerciseMeta">每邊 6–8 次</p>
+                  </div>
+                  <span class="chev">⌄</span>
+                </button>
+                <div class="exerciseBody">
+                  <div class="playCard" data-video="https://player.vimeo.com/video/1198654858?h=1aed151171&autoplay=1" role="button" tabindex="0" aria-label="播放 單腿前彎">
+                    <div class="playSurface" data-num="3">
+                      <div class="playIcon">▶</div>
+                      <div class="playLabel"><span>單腿前彎</span><span>點擊播放</span></div>
+                    </div>
+                  </div>
+                  <div class="miniInfo">
+                    <div class="infoLine"><b>目標：</b>練骨盆前後切換，不是只拉筋。</div>
+                    <div class="infoLine"><b>觀察：</b>前後移動要順，不要腰、骨盆或膝蓋亂代償。</div>
+                  </div>
+                </div>
+              </article>
+              <button class="revealBtn" data-reveal="retry-split-wrap" type="button">做完了，測測看有沒有進步 →</button>
+            </div>
+          </div>
+        </section>
+        <div class="hidden-step" id="retry-split-wrap">
+        <section class="section">
+          <span class="tag">回測</span>
+          <h2 class="sectionTitle">再測一次分腿伸展</h2>
+
+          <p class="questionTitle">做完後，有沒有比較好？</p>
+          <div class="choiceRow" aria-label="分腿伸展回測結果選項">
+            <button class="choice" data-test="split" data-kind="result" data-value="有變好" type="button">有變好</button>
+            <button class="choice" data-test="split" data-kind="result" data-value="差不多" type="button">差不多</button>
+            <button class="choice" data-test="split" data-kind="result" data-value="更卡" type="button">更卡</button>
+            <button class="choice" data-test="split" data-kind="result" data-value="不確定" type="button">不確定</button>
+          </div>
+
+          <p class="questionTitle">哪個還最明顯？</p>
+          <div class="choiceRow issue" aria-label="分腿伸展最符合的卡點選項">
+            <button class="choice" data-test="split" data-kind="issue" data-value="髖前側很卡" type="button">髖前側很卡</button>
+            <button class="choice" data-test="split" data-kind="issue" data-value="腰會凹下去" type="button">腰會凹下去</button>
+            <button class="choice" data-test="split" data-kind="issue" data-value="腿後側很緊" type="button">腿後側很緊</button>
+            <button class="choice" data-test="split" data-kind="issue" data-value="前腳伸不直" type="button">前腳伸不直</button>
+            <button class="choice" data-test="split" data-kind="issue" data-value="骨盆切換卡" type="button">骨盆切換卡</button>
+            <button class="choice" data-test="split" data-kind="issue" data-value="膝腰不舒服" type="button">膝腰不舒服</button>
+          </div>
+
+          <div class="reportBox" id="report-split"></div>
+          <div class="actionRow">
+            <button class="copyBtn" data-report-target="report-split" type="button">複製回測結果</button>
+            <a class="ctaBtn" href="#" target="_blank" rel="noopener">到 Skool 回報</a>
+          </div>
+        </div>
+        </section>
+      </main>
+
+    </div>
+</div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modalInner" id="modalInner">
+      <button class="modalClose" id="modalClose" type="button" aria-label="關閉影片">×</button>
+      <div class="modalVideo" id="modalVideo"></div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const closeBtn = document.getElementById('modalClose');
+    const emptyHint = document.getElementById('emptyHint');
+
+    function openVideo(src) {
+      modalVideo.innerHTML = `<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen title="播放影片"></iframe>`;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    document.querySelectorAll('.playCard').forEach((card) => {
+      card.addEventListener('click', () => openVideo(card.getAttribute('data-video')));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openVideo(card.getAttribute('data-video'));
+        }
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      modalVideo.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    function activateTest(testId, shouldScroll = false) {
+      document.querySelectorAll('.tabBtn').forEach(b => b.classList.remove('active'));
+      const btn = document.querySelector(`.tabBtn[data-test="${testId}"]`);
+      if (btn) btn.classList.add('active');
+
+      document.querySelectorAll('.testPanel').forEach(panel => panel.classList.remove('open'));
+      const panel = document.getElementById(`panel-${testId}`);
+      if (panel) panel.classList.add('open');
+
+      emptyHint.classList.add('hidden');
+      if (shouldScroll) {
+        const target = document.getElementById(`test-${testId}`);
+        if (target) setTimeout(() => target.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+      }
+    }
+
+    document.querySelectorAll('.tabBtn[data-test]').forEach((btn) => {
+      btn.addEventListener('click', () => activateTest(btn.getAttribute('data-test'), true));
+    });
+
+    function setExerciseOpen(card, isOpen) {
+      card.classList.toggle('open', isOpen);
+      const head = card.querySelector('.exerciseHead');
+      if (head) head.setAttribute('aria-expanded', String(isOpen));
+      document.querySelectorAll('.exerciseNavBtn').forEach((btn) => {
+        if (btn.getAttribute('data-target') === card.id) btn.classList.toggle('active', isOpen);
+      });
+    }
+
+    function toggleExercise(id, shouldScroll = true) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      const willOpen = !card.classList.contains('open');
+      setExerciseOpen(card, willOpen);
+      if (willOpen && shouldScroll) {
+        setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+      }
+    }
+
+    document.querySelectorAll('.exerciseNavBtn').forEach((btn) => {
+      btn.addEventListener('click', () => toggleExercise(btn.getAttribute('data-target')));
+    });
+
+    document.querySelectorAll('.exerciseHead').forEach((head) => {
+      head.addEventListener('click', () => {
+        const card = head.closest('.exerciseCard');
+        if (!card) return;
+        toggleExercise(card.id, false);
+      });
+    });
+
+    const reportState = {
+      '9090': { selectedResult:'比較穩', selectedIssue:'大腿外側抽筋' },
+      frog: { selectedResult:'有變好', selectedIssue:'大腿內側很緊' },
+      split: { selectedResult:'有變好', selectedIssue:'髖前側很卡' }
+    };
+
+    const reportConfig = {
+      '9090': {
+        title:'A｜90/90',
+        resultMap: {
+          '比較穩': '比較穩',
+          '差不多': '差不多',
+          '更卡': '更卡',
+          '不確定': '還不太確定'
+        },
+        issueMap: {
+          '屁股往前跑': '做一做屁股往前滑，骨盆跟著翻。',
+          '腰會幫忙': '轉髖時腰會酸、會扭、身體往後仰。',
+          '大腿外側抽筋': '做 90/90 時，大腿外側很緊、很用力，甚至會抽筋。',
+          '其他': '比較明顯的是：＿＿＿＿。'
+        }
+      },
+      frog: {
+        title:'B｜支撐青蛙',
+        resultMap: {
+          '有變好': '有變好',
+          '差不多': '差不多',
+          '更卡': '更卡',
+          '不確定': '還不太確定'
+        },
+        issueMap: {
+          '大腿內側很緊': '往後坐時，大腿內側緊繃感很強。',
+          '往後坐卡住': '一往後坐就卡住，髖好像打不開空間。',
+          '身體很難直立': '身體很難保持直立，會一直想把胸挺出去。',
+          '腰會凹塌': '往後坐時腰會凹、會塌，肚子會往前掉。',
+          '骨盆會翻掉': '骨盆會前傾，屁股一坐回去就跟著翻掉。',
+          '膝髖內側不舒服': '膝蓋或髖內側會不舒服，要先把角度縮小。'
+        }
+      },
+      split: {
+        title:'C｜分腿伸展',
+        resultMap: {
+          '有變好': '有變好',
+          '差不多': '差不多',
+          '更卡': '更卡',
+          '不確定': '還不太確定'
+        },
+        issueMap: {
+          '髖前側很卡': '往前移時，後腳髖前側還是很卡。',
+          '腰會凹下去': '往前移時腰會凹下去，像是用腰在代償。',
+          '腿後側很緊': '往後移時，前腳腿後側緊繃感很強。',
+          '前腳伸不直': '往後移時前腳很難伸直，身體會想硬壓。',
+          '骨盆切換卡': '前後來回時，骨盆很難跟著髖順順切換。',
+          '膝腰不舒服': '過程中膝蓋或腰會不舒服，要先把幅度縮小。'
+        }
+      }
+    };
+
+    function updateReport(testId) {
+      const state = reportState[testId];
+      const config = reportConfig[testId];
+      const reportBox = document.getElementById(`report-${testId}`);
+      if (!state || !config || !reportBox) return;
+      const resultPhrase = config.resultMap[state.selectedResult] || state.selectedResult;
+      const issuePhrase = config.issueMap[state.selectedIssue] || `目前還最明顯的是：${state.selectedIssue}。`;
+      reportBox.textContent = `${config.title} 做完後${resultPhrase}。
+${issuePhrase}`;
+    }
+
+    // reveal buttons — show target + if it's a top-level exercise wrap, auto-show first inner btn
+    document.querySelectorAll('.revealBtn[data-reveal]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetId = btn.getAttribute('data-reveal');
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        target.classList.add('visible');
+        btn.style.display = 'none';
+
+        // Show the next progressive button inside the section that was just revealed.
+        // This fixes the nested flow: ex2 appears -> its "continue to ex3" button must appear too.
+        const firstInnerBtn = target.querySelector('.revealBtn.hidden-step');
+        if (firstInnerBtn) {
+          firstInnerBtn.classList.add('visible');
+          firstInnerBtn.style.display = 'flex';
+        }
+
+        setTimeout(() => target.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+      });
+    });
+
+    document.querySelectorAll('.choice').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const testId = btn.getAttribute('data-test');
+        const kind = btn.getAttribute('data-kind');
+        const value = btn.getAttribute('data-value');
+        document.querySelectorAll(`.choice[data-test="${testId}"][data-kind="${kind}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (kind === 'result') reportState[testId].selectedResult = value;
+        if (kind === 'issue') reportState[testId].selectedIssue = value;
+        updateReport(testId);
+      });
+    });
+
+    Object.entries(reportState).forEach(([testId, state]) => {
+      const resultBtn = document.querySelector(`.choice[data-test="${testId}"][data-kind="result"][data-value="${state.selectedResult}"]`);
+      const issueBtn = document.querySelector(`.choice[data-test="${testId}"][data-kind="issue"][data-value="${state.selectedIssue}"]`);
+      if (resultBtn) resultBtn.classList.add('active');
+      if (issueBtn) issueBtn.classList.add('active');
+      updateReport(testId);
+    });
+
+    document.querySelectorAll('.copyBtn[data-report-target]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-report-target');
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        try {
+          await navigator.clipboard.writeText(target.textContent);
+          const old = btn.textContent;
+          btn.textContent = '已複製';
+          setTimeout(() => { btn.textContent = old; }, 1200);
+        } catch (err) {
+          alert('複製失敗，請手動長按文字複製');
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
